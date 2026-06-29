@@ -1,0 +1,111 @@
+                                   ASSIGNMENT 2
+                   Displaying Data from Multiple Tables Using Joins
+
+Q1.  Write a query for the HR department to produce the addresses of all the departments. Use the EMP and DEPT tables. Show the EMPNO, ENAME,SAL, DNAME and LOC in the output. Use a NATURAL JOIN to produce the results.
+
+ANS:SELECT EMPNO, ENAME, SAL, DNAME, LOC 
+    FROM EMP NATURAL JOIN DEPT;
+
+
+Q2. The HR department needs a report of all employees. Write a query to display the JOB,MGR,SAL,COMM,DNAME of employees whose JOB is SALESMAN.
+
+ANS: SELECT JOB, MGR, SAL, COMM, DNAME
+    FROM EMP 
+    NATURAL JOIN DEPT 
+    WHERE JOB = 'SALESMAN';
+
+
+Q3.The HR department needs a report of employees in LOC  DALLAS. Display the ENAME, job, DEPTNO, and DNAME for all employees who work in DALLAS.
+
+ANS:SELECT ENAME, JOB, DEPTNO, DNAME   
+    FROM EMP 
+    NATURAL JOIN DEPT
+    WHERE LOC = 'DALLAS';
+
+Q4.Create a report to display employees’ ename and employee number along with their manager’s name and manager number. Label the columns Employee, Emp#, Manager, and Mgr#, respectively.
+
+ANS: SELECT E.ENAME AS "Employee",
+     E.EMPNO AS "Emp#",
+     M.ENAME AS "Manager",
+     M.EMPNO AS "Mgr#"
+     FROM EMP E 
+     JOIN EMP M ON E.MGR = M.EMPNO;
+
+Q5.Modify the previous Query to display all employees including King, who has no manager. Order the results by the employee number.
+
+ANS: SELECT E.ENAME AS "Employee",
+     E.EMPNO AS "Emp#",
+     M.ENAME AS "Manager",
+     M.EMPNO AS "Mgr#" 
+    FROM EMP E 
+     LEFT JOIN EMP M ON E.MGR = M.EMPNO
+     ORDER BY E.EMPNO;
+
+Q6.The HR department needs a report on job grades and salaries. To familiarize yourself with the SALGRADE table, first show the structure of the SALGRADE table. Then create a query that displays the name, job, department name, salary, and grade for all employees.
+
+ANS: Display the structure of SALGRADE table:
+ DESC SALGRADE; 
+
+ Display employee details with salary grade:
+
+ SELECT ENAME, JOB, DNAME, SAL, GRADE 
+ FROM EMP 
+ NATURAL JOIN DEPT JOIN SALGRADE ON SAL 
+ BETWEEN LOSAL AND HISAL;
+
+
+Q7.Display the ENAME,DNAME of all the employees. Also display those department name which do not have any employees working.
+
+ANS:SELECT ENAME, DNAME 
+   FROM EMP
+   RIGHT JOIN DEPT ON EMP.DEPTNO = DEPT.DEPTNO;
+
+
+Q8.The HR department needs to find the names and hire dates for all employees who were hired before their managers, along with their managers’ names and hire dates.
+
+ANS:SELECT E.ENAME, E.HIREDATE,
+    M.ENAME, M.HIREDATE  
+    FROM EMP E  
+    JOIN EMP M ON E.MGR = M.EMPNO 
+    WHERE E.HIREDATE < M.HIREDATE;
+
+
+Q9.Display the EMPNO,ENAME,DNAME,LOC  of those employees who are working as CLERK. Use the USING clause.
+
+ANS:SELECT EMPNO, ENAME,
+    DNAME, LOC 
+    FROM EMP 
+    JOIN DEPT USING (DEPTNO)
+    WHERE JOB = 'CLERK';
+
+
+Q10.Display the ENAME,SAL,MGR,DNAME of employees whose salary is more than 2000. Use the ON clause.
+
+ANS: SELECT ENAME, SAL, MGR, DNAME
+     FROM EMP 
+     JOIN DEPT ON EMP.DEPTNO = DEPT.DEPTNO 
+     WHERE SAL > 2000;
+
+
+Q11.Display the EMPNO,ENAME,JOB,DEPTNO,DNAME,LOC of employees. Use LEFT OUTER JOIN.
+
+ANS: SELECT EMPNO, ENAME, JOB,
+     EMP.DEPTNO, DNAME, LOC 
+     FROM EMP 
+     LEFT OUTER JOIN DEPT ON EMP.DEPTNO = DEPT.DEPTNO;
+
+
+Q12.Display the ENAME,DNAME of employees. Use RIGHT OUTER JOIN.
+
+ANS:SELECT ENAME, DNAME 
+    FROM EMP  
+    RIGHT OUTER JOIN DEPT ON EMP.DEPTNO = DEPT.DEPTNO;
+
+
+Q13.Display the EMPNO,DNAME,LOC of employees. Use FULL OUTER JOIN.
+
+ANS:SELECT EMPNO, DNAME, LOC
+    FROM EMP
+    FULL OUTER JOIN DEPT
+    ON EMP.DEPTNO = DEPT.DEPTNO;
+

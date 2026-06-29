@@ -1,0 +1,25 @@
+                            ASSIGNMENT 2
+                  Retrieving Data Using the SQL SELECT Statement
+
+Q1. Determine the Structure of DEPT Table and its Contents.
+
+ANS: This displays the structure of the DEPT table:
+     DESCRIBE DEPT;
+
+
+To display the contents of the table:
+SELECT * FROM DEPT;
+
+
+Q2.Determine the Structure of EMP Table and its Contents.
+
+ANS:  DESCRIBE EMP;
+      SELECT * FROM EMP;
+
+
+
+Q3. Display the Ename and Deptno from Emp table whose Empno is 7788.
+
+ANS:   SELECT ENAME, DEPTNO
+       FROM EMP
+       WHERE EMPNO = 7788;

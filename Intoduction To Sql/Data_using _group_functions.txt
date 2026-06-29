@@ -1,0 +1,74 @@
+		REPORITNG AGGREAGTED DATA USING GROUP FUNCTIONS
+
+
+Q1. Find the highest, lowest, sum and average salary of all employees and label the columns.
+
+SOL:
+
+Q2. Maximum, minimum , sum and average resp and round to the nearest whole number.
+
+SOL:		REPORITNG AGGREAGTED DATA USING GROUP FUNCTIONS
+
+
+Q1. Find the highest, lowest, sum and average salary of all employees and label the columns.
+
+SOL: SELECT MAX(SAL) AS "HIGHEST",
+      	MIN(SAL) AS "LOWEST",
+      	SUM(SAL) AS "TOTAL",
+      	AVG(SAL) AS "AVERAGE"
+	FROM EMP;
+
+Q2. Maximum, minimum , sum and average resp and round to the nearest whole number.
+
+SOL: SELECT MAX(SAL) AS "MAXIMUM",
+	MIN(SAL) AS "MINIMUM",
+  	SUM(SAL) AS "TOTAL",
+      	ROUND(AVG(SAL)) AS "AVERAGE"
+	FROM EMP;
+
+Q3. Modify the above query to display minimum, maximum, sum and average salary for each job type .
+
+SOL: SELECT JOB,
+     	MAX(SAL) AS "MAXIMUM",
+     	MIN(SAL) AS "MINIMUM",
+      	SUM(SAL) AS "TOTAL",
+      	ROUND(AVG(SAL)) AS "AVERAGE"
+	FROM EMP
+	GROUP BY JOB;
+
+Q4. Write a query to display the number of people with same job.
+
+SOL: SELECT JOB,
+      	COUNT(*) AS "NO_OF_EMPLOYEES"
+	FROM EMP
+	GROUP BY JOB;
+
+Q5. Determine the number of managers without listing them and label them as number if managers.
+
+SOL: SELECT COUNT(DISTINCT MGR) AS "NUMBER OF MANAGERS"
+	FROM EMP;
+
+Q6. Find the difference between highest and lowest salaries. Label it as DIFFERENCE.
+
+SOL: SELECT MAX(SAL) - MIN(SAL) AS "DIFFERENCE"
+	FROM EMP;
+
+Q7. Create a report to display the manager number and salary of lowest paid employee for that manager. Exclude anyone whose manager is not known, Exclude any groups where min salary is $2000 or less. Sort by descending order.
+
+SOL: SELECT MGR,
+      	MIN(SAL) AS "LOWEST_SALARY"
+	FROM EMP
+	WHERE MGR IS NOT NULL
+	GROUP BY MGR
+	HAVING MIN(SAL) > 2000
+	ORDER BY MIN(SAL) DESC;
+
+Q8. Create a query to display the total number of employees and of that total, the number of employees hire in 1980, 1981 or 1982.
+
+SOL:SELECT COUNT(*) AS "TOTAL_EMPLOYEES",
+      	SUM(DECODE(TO_CHAR(HIREDATE,'YYYY'),'1980',1,0)) AS "1980",
+      	SUM(DECODE(TO_CHAR(HIREDATE,'YYYY'),'1981',1,0)) AS "1981",
+      	SUM(DECODE(TO_CHAR(HIREDATE,'YYYY'),'1982',1,0)) AS "1982"
+	FROM EMP;
+
+

@@ -1,0 +1,106 @@
+		USING SINGLE-ROW FUNCTIONS TO CUSTOMISE THE OUTPUT
+
+
+Q1. Write a query to display current date. Label the column Date.
+
+SOL: SELECT SYSDATE AS "Date"
+	FROM DUAL;
+
+Q2. The HR dept needs a report to display the empno, last name , salary and salary increased by 15.5% for each employee. Label the column New Salary.
+
+SOL: SELECT EMPNO, ENAME, 
+	SAL, ROUND(SAL*1.155) AS "New Salary"
+	FROM EMP;
+
+Q3.Modify the previous query to add a column that subtracts the old salary form new salary and label the column as increase.
+
+SOL: SELECT EMPNO, ENAME,
+	SAL, ROUND(SAL*1.155) AS "New Salary"
+	ROUND(SAL*1.155)- SAL AS "INCREASE"
+	FROM EMP;
+
+Q4. Write a query that displays the ename( with first letter uppercase and all other letters lowercase) and the length of the ename for all employees whose name starts with letters J, A, or M. Give each column an appropriate label. Sort the result by employees' names.
+
+SOL: SELECT INITCAP(ENAME),
+	LENGTH (ENAME)
+	FROM EMP 
+	WHERE ENAME LIKE 'J%'
+	OR ENAME LIKE 'A%'
+	OR ENAME LIKE 'M%' 
+	ORDER BY ENAME;
+
+Q5. Rewrite a query so that the user is prompted to enter a letter that starts the last name.
+
+SOL: SELECT ENAME FROM EMP 
+	WHERE ENAME LIKE '&Last_name' || '%' ;
+
+Q6. The HR department wants to find the length if employment for each employee. For each employee display ename and calculate the number of months they have worked. Label the column as MONTHS_WORKED.
+
+SOL: SELECT ENAME,
+	MONTHS_BETWEEN(SYSDATE, HIREDATE ) AS "MONTHS_WORKED"
+	FROM EMP;
+
+Q7. Create a report that produces the following for each employee: earns monthly but wants <3 times salary>. Label the column as Dream_salaries.
+
+SOL: SELECT ENAME || ' earns ' || SAL ||
+	' monthly but wants ' || (SAL * 3) AS "Dream_Salaries"
+	FROM EMP;
+
+Q8. Create a query to display the last name and salary for all employees and format the salary to be 15 characters long with $ symbol.
+
+SOL: SELECT ENAME,
+	LPAD('$' || SAL, 15) AS SALARY
+	FROM EMP;
+
+Q9. Display each employee's last name , hiredate and salary review date which is first Monday after six months of services and label the column as review.
+
+SOL: SELECT ENAME,
+	HIREDATE,
+	NEXT_DAY(ADD_MONTHS(HIREDATE, 6), 'MONDAY') AS "REVIEW"
+	FROM EMP;
+
+Q10. Create a query that displays the employees' last names and commission amounts. If no commission, label it as "No commission".
+
+SOL: SELECT ENAME,
+	NVL(TO_CHAR(COMM), 'No commission') AS "COMMISSION"
+	FROM EMP;
+
+Q11. Display the last name , hire date and the day of the week on which employee started and order the results by day of the week and label the column as COMM.
+
+SOL: SELECT ENAME,
+	HIREDATE,
+	TO_CHAR(HIREDATE, 'DAY') AS "COMM"
+	FROM EMP
+	ORDER BY TO_CHAR(HIREDATE, 'DAY');
+
+Q12. Create a query that displays the first 8 characters of employees' name and indicate the amount of their salaries with asterisk and label the column as EMPLOYEES_AND_THEIR SALARIES.
+
+SOL: SELECT SUBSTR(ENAME, 1, 8) || ' ' || RPAD('*', SAL/100, '*')
+	AS "EMPLOYEES_AND_THEIR_SALARIES"
+	FROM EMP;
+
+Q13.Using the DECODE function, write a query that displays the grade of a;; employees based on the value of column JOB_ID using the following data : PRESIDENT - A, MANAGER-B, SALESMAN-C, CLERK-D.
+
+SOL: SELECT ENAME,
+	JOB,
+	DECODE(JOB,
+		'PRESIDENT', 'A',
+		'MANAGER', 'B',
+		'SALESMAN', 'C',
+		'CLERK', 'D',
+		'No Grade') AS GRADE
+	FROM EMP;
+
+Q14. Rewrite the statement in preceding question using CASE syntax.
+
+SOL: SELECT ENAME,
+	JOB,	
+	CASE
+		WHEN JOB = 'PRESIDENT' THEN 'A'
+		WHEN JOB = 'MANAGER' THEN 'B'
+		WHEN JOB = 'SALESMAN' THEN 'C'
+		WHEN JOB = 'CLERK' THEN 'D'
+		ELSE 'No Grade'
+       		END AS GRADE
+	FROM EMP;
+
