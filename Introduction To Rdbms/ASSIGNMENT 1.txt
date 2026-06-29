@@ -1,0 +1,85 @@
+                              ASSIGNMENT 1
+Q1.Observe the structures of a given EMPLOYEE table as below and suggest if this table can be further Normalized
+EMPNO,ENAME,SAL,DEPTNO,DNAME,LOC
+Explain what normal form this table is and how you can make this into next normal form
+
+ANS: The table is in both 1NF and 2NF because each column contains only a single value and the primary key (EMPNO) is a single attribute, so there is no partial dependency. The table can be further normalised into 3NF because there is a transitive dependency:
+EMPNO -> DEPTNO
+DEPTNO -> DNAME, LOC
+
+Hence,
+EMPNO -> DNAME, LOC (Transitive Dependency)
+
+So, the table can be converted into 3NF by creating two tables.
+
+CREATE TABLE Department (
+ DeptNo INT PRIMARY KEY,
+ DName VARCHAR(20), 
+Loc VARCHAR(20) ); 
+
+
+CREATE TABLE Employee (
+ EmpNo INT PRIMARY KEY,
+ EName VARCHAR(20),
+ Sal INT,
+ DeptNo INT,
+ FOREIGN KEY (DeptNo) REFERENCES Department(DeptNo) );
+
+
+
+Q2.Observe the structures of a given STUDENT table as below and suggest if this table can be further Normalized
+ROLLNO, NAME,AGE,EXAM, MARKS, GRADE
+Explain what normal form this table is and how you can make this into next normal form
+
+Ans:If one student can appear for only one exam, then the table is already in 2NF. But if a student can take multiple exams, then the primary key will be (ROLLNO, EXAM).
+In that case, the table is in 1NF because all the values are atomic, but it is not in 2NF because NAME and AGE depend only on ROLLNO, not on the whole primary key.
+
+Partial Dependency:
+
+ROLLNO → NAME, AGE
+(ROLLNO, EXAM) → MARKS, GRADE
+
+So, the table can be converted into 2NF by splitting it into two tables.
+
+CREATE TABLE STUDENT(
+ ROLLNO INT PRIMARY KEY,
+ NAME VARCHAR(20),
+ AGE INT );
+
+
+ CREATE TABLE STUDENT_EXAM( ROLLNO INT, EXAM VARCHAR(20),
+ MARKS INT,
+ GRADE VARCHAR(5), 
+PRIMARY KEY (ROLLNO, EXAM), 
+FOREIGN KEY (ROLLNO) REFERENCES STUDENT(ROLLNO) );
+
+
+
+Q3.Observe the structure of a given EMPLOYEE table and suggest what kind of problem this table has and how to solve the problem
+EMPNO,PROJECT_NO,NO_OF_DAYS,CUSTOMERNAME
+In the above table EMPNO AND PROJECT_NO both are together a composite primary key 
+
+ANS: The composite primary key of the table is(EMPNO, PROJECT_NO).The table is in 1NF, but it is not in 2NF because there is a partial dependency.
+
+Partial Dependency:
+
+(EMPNO, PROJECT_NO) → NO_OF_DAYS
+ PROJECT_NO → CUSTOMERNAME
+
+Since CUSTOMERNAME depends only on PROJECT_NO and not on the whole composite key, the table has a partial dependency.
+To remove this problem, the table can be divided into two tables.
+
+CREATE TABLE PROJECT(
+    PROJECT_NO INT PRIMARY KEY,
+    CUSTOMERNAME VARCHAR(30)
+);
+
+CREATE TABLE EMPLOYEE_PROJECT(
+    EMPNO INT,
+    PROJECT_NO INT,
+    NO_OF_DAYS INT,
+    PRIMARY KEY (EMPNO, PROJECT_NO),
+    FOREIGN KEY (PROJECT_NO) REFERENCES PROJECT(PROJECT_NO)
+);
+
+
